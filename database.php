@@ -19,4 +19,10 @@ function dbConnect(){
     }
 }
 
+function isGoodPassword($string1, $string2){
+    return ($string1 == $string2);
+}
+
+echo isGoodPassword(test, test);
+echo "ouo";
 ?>

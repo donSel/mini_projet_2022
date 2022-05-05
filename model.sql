@@ -8,6 +8,7 @@ CREATE TABLE public.doc(
 	prenom          CHAR (50)  NOT NULL ,
 	specialite      CHAR (50)  NOT NULL ,
 	etablissement   VARCHAR (50) NOT NULL  ,
+    telephone       INT  NOT NULL ,
 	CONSTRAINT doc_PK PRIMARY KEY (id_doc) ,
 	CONSTRAINT doc_AK UNIQUE (etablissement)
 )WITHOUT OIDS;
@@ -22,6 +23,7 @@ CREATE TABLE public.user(
 	prenom    CHAR (50)  NOT NULL ,
 	mail      VARCHAR (50) NOT NULL ,
 	mdp       VARCHAR (50) NOT NULL  ,
+    telephone       INT  NOT NULL ,
 	CONSTRAINT user_PK PRIMARY KEY (id_user)
 )WITHOUT OIDS;
 

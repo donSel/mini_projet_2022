@@ -19,7 +19,7 @@
         <nav class="navbar navbar-dark">
             <div class="container-fluid">
             <a class="navbar-brand" href="accueil.php">
-                <img src="caduceus-2029254_640.webp" width="50" height="60">
+                <img src="images/caduceus-2029254_640.webp" width="50" height="60">
                 здоровье
             </a>
             <div class="barre">

@@ -22,9 +22,11 @@
     $db = dbConnect();
     
     $mail = $arrFirstName[0] . "." . $arrLastName[0] . "@gmail.com";
-    addUser($db, $mdp, $arrFirstName[0], $arrLastName[0], $mail, $tel);
+    //addUser($db, $mdp, $arrFirstName[0], $arrLastName[0], $mail, $tel);
     //echo $mail;
-    //addUser($db, "password", $arrFirstName[0], $arrLastName[0], $mail, $tel);
+    addUser($db, "password", "Mickaël", "Neroda", "mickael.neroda@gmail.com", '0783069282');
+    addAppartenir($db, "sous-sol", "belel@wanadoo.org", 6670);
+    $commptes = getComptes($db, $mail, $mdp, true);
     
     
    /*for ($i = 0; $i < $n; $i++){

@@ -5,7 +5,7 @@
     //dbConnect(...)
     function dbConnect(){
 
-        $dsn = 'pgsql:dbname='.DB_NAME.';host='.DB_SERVER.';port='.DB_PORT;
+        $dsn = 'pgsql:dbname='.DB_NAME.';host='.DB_SERVER.';port='.DB_PORT.";";
         $user = DB_USER;
         $password = DB_PASSWORD;
 
@@ -85,7 +85,7 @@
     //addUser(...)
     function addUser($db, $mdp, $firstName, $lastName, $mail, $telephone){
         // Statement compte patient
-        $stmt = $db->prepare("INSERT INTO PATIENT (mail, nom, prenom, mdp, telephone) VALUES (:mail, :nom, :prenom, :mdp, :telephone)");
+        $stmt = $db->prepare("INSERT INTO patient (mail, nom, prenom, mdp, telephone) VALUES (:mail, :nom, :prenom, :mdp, :telephone)");
         $stmt->bindParam(':mail', $mail);
         $stmt->bindParam(':nom', $nom);
         $stmt->bindParam(':prenom', $prenom);
@@ -142,12 +142,12 @@
     
     //addAppartenir(..)
     function addAppartenir($db, $etablissement, $mail, $code_postal){
-
         $stmtAppartenirTable = $db->prepare("INSERT INTO appartenir (etablissement, mail, code_postal) VALUES (:etablissement, :mail, :code_postal)");
         $stmtAppartenirTable->bindParam(':mail', $mail);
         $stmtAppartenirTable->bindParam(':etablissement', $etablissement);
         $stmtAppartenirTable->bindParam(':code_postal', $code_postal);
         $stmtAppartenirTable->execute();
+        echo "jfzeop";
     }
     
     

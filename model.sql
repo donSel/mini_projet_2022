@@ -1,74 +1,75 @@
 ------------------------------------------------------------
 --        Script Postgre 
 ------------------------------------------------------------
-
+DROP TABLE IF EXISTS doc CASCADE;
+DROP TABLE IF EXISTS patient CASCADE;
+DROP TABLE IF EXISTS etablissement CASCADE;
+DROP TABLE IF EXISTS appartenir CASCADE;
+DROP TABLE IF EXISTS prendre CASCADE;
 
 
 ------------------------------------------------------------
 -- Table: doc
 ------------------------------------------------------------
-CREATE TABLE public.doc(
+CREATE TABLE doc(
 	mail            VARCHAR (50) NOT NULL ,
 	mdp             VARCHAR (50) NOT NULL ,
 	nom             CHAR (50)  NOT NULL ,
 	prenom          CHAR (50)  NOT NULL ,
 	specialite      CHAR (50)  NOT NULL ,
-	telephone       INT  NOT NULL ,
-	CONSTRAINT doc_PK PRIMARY KEY (mail) ,
-	CONSTRAINT doc_AK UNIQUE (etablissement)
-)WITHOUT OIDS;
+	telephone       INTEGER  NOT NULL ,
+	PRIMARY KEY (mail) 
+);
 
 
 ------------------------------------------------------------
 -- Table: patient
 ------------------------------------------------------------
-CREATE TABLE public.patient(
+CREATE TABLE patient(
 	mail        VARCHAR (50) NOT NULL ,
 	nom         CHAR (50)  NOT NULL ,
 	prenom      CHAR (50)  NOT NULL ,
 	mdp         VARCHAR (50) NOT NULL ,
-	telephone   INT  NOT NULL  ,
-	CONSTRAINT patient_PK PRIMARY KEY (mail)
-)WITHOUT OIDS;
+	telephone   INTEGER  NOT NULL  ,
+	PRIMARY KEY (mail)
+);
 
 
 ------------------------------------------------------------
 -- Table: etablissement
 ------------------------------------------------------------
-CREATE TABLE public.etablissement(
+CREATE TABLE etablissement(
 	etablissement   VARCHAR (50) NOT NULL ,
 	ville           CHAR (50)  NOT NULL ,
-	code_postal     INT  NOT NULL  ,
-	CONSTRAINT etablissement_PK PRIMARY KEY (etablissement)
-)WITHOUT OIDS;
+	code_postal     INTEGER  NOT NULL  ,
+	PRIMARY KEY (etablissement)
+);
 
 
 ------------------------------------------------------------
 -- Table: appartenir
 ------------------------------------------------------------
-CREATE TABLE public.appartenir(
+CREATE TABLE appartenir(
 	etablissement   VARCHAR (50) NOT NULL ,
 	mail            VARCHAR (50) NOT NULL  ,
-	CONSTRAINT appartenir_PK PRIMARY KEY (etablissement,mail)
-
-	,CONSTRAINT appartenir_etablissement_FK FOREIGN KEY (etablissement) REFERENCES public.etablissement(etablissement)
-	,CONSTRAINT appartenir_doc0_FK FOREIGN KEY (mail) REFERENCES public.doc(mail)
-)WITHOUT OIDS;
+	PRIMARY KEY (etablissement,mail) ,
+	FOREIGN KEY (etablissement) REFERENCES etablissement(etablissement) ,
+	FOREIGN KEY (mail) REFERENCES doc(mail)
+);
 
 
 ------------------------------------------------------------
 -- Table: prendre
 ------------------------------------------------------------
-CREATE TABLE public.prendre(
-	mail_doc           VARCHAR (50) NOT NULL ,
+CREATE TABLE prendre(
+	mail           VARCHAR (50) NOT NULL ,
 	mail_patient   VARCHAR (50) NOT NULL ,
 	heure          TIMESTAMP  NOT NULL ,
-	date           DATE  NOT NULL  ,
-	CONSTRAINT prendre_PK PRIMARY KEY (mail_doc,mail_patient)
-
-	,CONSTRAINT prendre_doc_FK FOREIGN KEY (mail_doc) REFERENCES public.doc(mail_doc)
-	,CONSTRAINT prendre_patient0_FK FOREIGN KEY (mail_patient) REFERENCES public.patient(mail)
-)WITHOUT OIDS;
+	jour           DATE  NOT NULL  ,
+	PRIMARY KEY (mail,mail_patient) ,
+	FOREIGN KEY (mail) REFERENCES doc(mail) ,
+	FOREIGN KEY (mail_patient) REFERENCES patient(mail)
+);
 
 
 

@@ -1,30 +1,34 @@
+------------------------------------------------------------
+--        Script Postgre 
+------------------------------------------------------------
+
+
+
+------------------------------------------------------------
 -- Table: doc
 ------------------------------------------------------------
 CREATE TABLE public.doc(
-	id_doc          SERIAL NOT NULL ,
 	mail            VARCHAR (50) NOT NULL ,
 	mdp             VARCHAR (50) NOT NULL ,
 	nom             CHAR (50)  NOT NULL ,
 	prenom          CHAR (50)  NOT NULL ,
 	specialite      CHAR (50)  NOT NULL ,
-	etablissement   VARCHAR (50) NOT NULL  ,
-    telephone       INT  NOT NULL ,
-	CONSTRAINT doc_PK PRIMARY KEY (id_doc) ,
+	telephone       INT  NOT NULL ,
+	CONSTRAINT doc_PK PRIMARY KEY (mail) ,
 	CONSTRAINT doc_AK UNIQUE (etablissement)
 )WITHOUT OIDS;
 
 
 ------------------------------------------------------------
--- Table: user
+-- Table: patient
 ------------------------------------------------------------
-CREATE TABLE public.user(
-	id_user   SERIAL NOT NULL ,
-	nom       CHAR (50)  NOT NULL ,
-	prenom    CHAR (50)  NOT NULL ,
-	mail      VARCHAR (50) NOT NULL ,
-	mdp       VARCHAR (50) NOT NULL  ,
-    telephone       INT  NOT NULL ,
-	CONSTRAINT user_PK PRIMARY KEY (id_user)
+CREATE TABLE public.patient(
+	mail        VARCHAR (50) NOT NULL ,
+	nom         CHAR (50)  NOT NULL ,
+	prenom      CHAR (50)  NOT NULL ,
+	mdp         VARCHAR (50) NOT NULL ,
+	telephone   INT  NOT NULL  ,
+	CONSTRAINT patient_PK PRIMARY KEY (mail)
 )WITHOUT OIDS;
 
 
@@ -44,11 +48,11 @@ CREATE TABLE public.etablissement(
 ------------------------------------------------------------
 CREATE TABLE public.appartenir(
 	etablissement   VARCHAR (50) NOT NULL ,
-	id_doc          INT  NOT NULL  ,
-	CONSTRAINT appartenir_PK PRIMARY KEY (etablissement,id_doc)
+	mail            VARCHAR (50) NOT NULL  ,
+	CONSTRAINT appartenir_PK PRIMARY KEY (etablissement,mail)
 
 	,CONSTRAINT appartenir_etablissement_FK FOREIGN KEY (etablissement) REFERENCES public.etablissement(etablissement)
-	,CONSTRAINT appartenir_doc0_FK FOREIGN KEY (id_doc) REFERENCES public.doc(id_doc)
+	,CONSTRAINT appartenir_doc0_FK FOREIGN KEY (mail) REFERENCES public.doc(mail)
 )WITHOUT OIDS;
 
 
@@ -56,11 +60,15 @@ CREATE TABLE public.appartenir(
 -- Table: prendre
 ------------------------------------------------------------
 CREATE TABLE public.prendre(
-	id_doc    INT  NOT NULL ,
-	id_user   INT  NOT NULL ,
-	heure     TIMESTAMP  NOT NULL  ,
-	CONSTRAINT prendre_PK PRIMARY KEY (id_doc,id_user)
+	mail_doc           VARCHAR (50) NOT NULL ,
+	mail_patient   VARCHAR (50) NOT NULL ,
+	heure          TIMESTAMP  NOT NULL ,
+	date           DATE  NOT NULL  ,
+	CONSTRAINT prendre_PK PRIMARY KEY (mail_doc,mail_patient)
 
-	,CONSTRAINT prendre_doc_FK FOREIGN KEY (id_doc) REFERENCES public.doc(id_doc)
-	,CONSTRAINT prendre_user0_FK FOREIGN KEY (id_user) REFERENCES public.user(id_user)
+	,CONSTRAINT prendre_doc_FK FOREIGN KEY (mail_doc) REFERENCES public.doc(mail_doc)
+	,CONSTRAINT prendre_patient0_FK FOREIGN KEY (mail_patient) REFERENCES public.patient(mail)
 )WITHOUT OIDS;
+
+
+

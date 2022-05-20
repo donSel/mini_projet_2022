@@ -1,0 +1,1 @@
+SELECT * FROM etablissement WHERE ville = 'CHU';

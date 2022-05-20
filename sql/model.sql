@@ -1,3 +1,17 @@
+ /*
+ * File: /var/www/html/php/projet/code/model.sql
+ * Project: /var/www/html/php/projet/code
+ * Created Date: Thursday May 5th 2022
+ * Author: Mickaël Neroda
+ * -----
+ * Last Modified: Thursday May 5th 2022 10:50:37 am
+ * Modified By: the developer formerly known as Mickaël Neroda at <you@you.you>
+ * -----
+ * Copyright (c) 2022 Your Company
+ * -----
+ * HISTORY:
+ */
+
 ------------------------------------------------------------
 --        Script Postgre 
 ------------------------------------------------------------
@@ -6,7 +20,6 @@ DROP TABLE IF EXISTS patient CASCADE;
 DROP TABLE IF EXISTS etablissement CASCADE;
 DROP TABLE IF EXISTS appartenir CASCADE;
 DROP TABLE IF EXISTS prendre CASCADE;
-
 
 ------------------------------------------------------------
 -- Table: doc
@@ -17,7 +30,7 @@ CREATE TABLE doc(
 	nom             CHAR (50)  NOT NULL ,
 	prenom          CHAR (50)  NOT NULL ,
 	specialite      CHAR (50)  NOT NULL ,
-	telephone       INTEGER  NOT NULL ,
+	telephone       VARCHAR (50)  NOT NULL ,
 	PRIMARY KEY (mail) 
 );
 
@@ -30,7 +43,7 @@ CREATE TABLE patient(
 	nom         CHAR (50)  NOT NULL ,
 	prenom      CHAR (50)  NOT NULL ,
 	mdp         VARCHAR (50) NOT NULL ,
-	telephone   INTEGER  NOT NULL  ,
+	telephone   VARCHAR (50)  NOT NULL ,
 	PRIMARY KEY (mail)
 );
 
@@ -40,6 +53,7 @@ CREATE TABLE patient(
 ------------------------------------------------------------
 CREATE TABLE etablissement(
 	etablissement   VARCHAR (50) NOT NULL ,
+	adresse        VARCHAR (50) NOT NULL ,
 	ville           CHAR (50)  NOT NULL ,
 	code_postal     INTEGER  NOT NULL  ,
 	PRIMARY KEY (etablissement)
@@ -52,6 +66,7 @@ CREATE TABLE etablissement(
 CREATE TABLE appartenir(
 	etablissement   VARCHAR (50) NOT NULL ,
 	mail            VARCHAR (50) NOT NULL  ,
+	code_postal     INTEGER  NOT NULL  ,
 	PRIMARY KEY (etablissement,mail) ,
 	FOREIGN KEY (etablissement) REFERENCES etablissement(etablissement) ,
 	FOREIGN KEY (mail) REFERENCES doc(mail)

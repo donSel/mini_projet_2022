@@ -63,7 +63,7 @@ CREATE TABLE etablissement(
 ------------------------------------------------------------
 -- Table: appartenir
 ------------------------------------------------------------
-CREATE TABLE appartenir(
+CREATE TABLE ap partenir(
 	etablissement   VARCHAR (50) NOT NULL ,
 	mail            VARCHAR (50) NOT NULL  ,
 	code_postal     INTEGER  NOT NULL  ,

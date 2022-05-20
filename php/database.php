@@ -10,7 +10,8 @@
         $password = DB_PASSWORD;
 
         try{
-            return new PDO($dsn, $user, $password);
+            $conn = new PDO($dsn, $user, $password);
+            return $conn;
         }
         catch (PDOException $e){
 
@@ -27,7 +28,7 @@
   
     
     //isStringSame(...)
-    function isGoodPassword($string1, $string2){
+    function isStringSame($string1, $string2){
         return ($string1 == $string2);
     }
     
@@ -84,13 +85,18 @@
     //addUser(...)
     function addUser($db, $mdp, $firstName, $lastName, $mail, $telephone){
         // Statement compte patient
-        $stmt = $db->prepare("INSERT INTO patient (mail, nom, prenom, mdp, telephone) VALUES (:mail, :nom, :prenom, :mdp, :telephone)");
+        $stmt = $db->prepare("INSERT INTO PATIENT (mail, nom, prenom, mdp, telephone) VALUES (:mail, :nom, :prenom, :mdp, :telephone)");
+        $stmt->bindParam(':mail', $mail);
         $stmt->bindParam(':nom', $nom);
         $stmt->bindParam(':prenom', $prenom);
-        $stmt->bindParam(':mail', $mail);
         $stmt->bindParam(':mdp', $mdp);
         $stmt->bindParam(':telephone', $telephone);
         $stmt->execute();
+        echo "$mdp\n";
+        echo "$firstName\n";
+        echo "$lastName\n";
+        echo "$mail\n";
+        echo "$telephone\n";
         
         // Updating user array
         $commptes = getComptes($db, $mail, $mdp, true);
@@ -124,12 +130,12 @@
     function addEtablissement($db, $etablissement, $adresse, $ville, $code_postal){
         $arr = getEtablissement($db, $etablissement, $code_postal);
         if (count($arr) == 0){
-            $stmtAppartenirTable = $db->prepare("INSERT INTO etablisssement (etablissement, adresse, ville, code_postal) VALUES (:etablissement, :adresse, :ville, :code_postal)");
-            $stmtAppartenirTable->bindParam(':etablissement', $etablissement);
-            $stmtAppartenirTable->bindParam(':adresse', $adresse);
-            $stmtAppartenirTable->bindParam(':ville', $ville);
-            $stmtAppartenirTable->bindParam(':code_postal', $code_postal);
-            $stmtAppartenirTable->execute();
+            $stmtEtablissementTable = $db->prepare("INSERT INTO etablisssement (etablissement, adresse, ville, code_postal) VALUES (:etablissement, :adresse, :ville, :code_postal)");
+            $stmtEtablissementTable->bindParam(':etablissement', $etablissement);
+            $stmtEtablissementTable->bindParam(':adresse', $adresse);
+            $stmtEtablissementTable->bindParam(':ville', $ville);
+            $stmtEtablissementTable->bindParam(':code_postal', $code_postal);
+            $stmtEtablissementTable->execute();
         }
     }
     

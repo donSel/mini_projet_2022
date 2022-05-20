@@ -1,4 +1,11 @@
 <?php
+    include ('database.php');
+    
+    // Enable all warnings and errors.
+    ini_set('display_errors', 1);
+    error_reporting(E_ALL);
+
+
     $arrLastName = ['ROM-PUISAIS', 'ROM DANE', 'ROLZOU', 'ROLZHAUSEN', 'ROLZEN'	, 'ROLZ', 'ROLU', 'ROLTMIT'	, 'ROLTHMEIR', 'ROLT-LEVEQUE', 'ROBICOUET', 'ROBICO', 'ROBICKEZ', 'ROBICHOY', 'ROBICHOU', 'RIESSE'];
     $arrFirstName = ['Bernard', 'Thomas' , 'Petit', 'Robert', 'Richard', 'Durand', 'Dubois', 'Moreau', 'Laurent', 'Simon', 'Michel', 'Lefebvre', 'Leroy', 'Roux', 'David', 'Bertrand'];
     //16
@@ -14,7 +21,13 @@
     $n = count($arrLastName);
     $db = dbConnect();
     
-    for ($i = 0; $i < $n; $i++){
+    $mail = $arrFirstName[0] . "." . $arrLastName[0] . "@gmail.com";
+    addUser($db, $mdp, $arrFirstName[0], $arrLastName[0], $mail, $tel);
+    //echo $mail;
+    //addUser($db, "password", $arrFirstName[0], $arrLastName[0], $mail, $tel);
+    
+    
+   /*for ($i = 0; $i < $n; $i++){
         $mail = $arrFirstName[$i] . "." . $arrLastName[$i] . "@gmail.com";
         if ($i < ($n / 2)){
             addUser($db, $mdp, $arrFirstName[$i], $arrLastName[$i], $mail, $tel);
@@ -23,7 +36,7 @@
             $rabJ = rand(3);
             addDoc($db, $mdp, $arrFirstName[$i], $arrLastName[$i], $mail, $tel, $arrSpecialite[$randI], $arrEtablissement[$randJ], $arrAdresse[$randJ], $arrCodePostal[$randJ], $arrVille[$randJ]);
         }
-    }
+    }*/
     
     // vérifier s on peut inserer 2 add mail pareil
     

@@ -1,1 +1,1 @@
-SELECT * FROM etablissement WHERE ville = 'CHU';
+INSERT INTO patient (mail, nom, prenom, mdp, telephone) VALUES ('mickael.neroda@gmail.com', 'neroda', 'mickaël', 'password', '0783069282');

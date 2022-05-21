@@ -22,64 +22,15 @@ DROP TABLE IF EXISTS prendre CASCADE;
 ------------------------------------------------------------
 -- Table: doc
 ------------------------------------------------------------
-/*CREATE TABLE doc(
-	mail            VARCHAR (50) PRIMARY KEY ,
-	mdp             VARCHAR (50) NOT NULL ,
-	nom             CHAR (50)  NOT NULL ,
-	prenom          CHAR (50)  NOT NULL ,
-	specialite      CHAR (50)  NOT NULL ,
-	telephone       VARCHAR (50)  NOT NULL ,
-	etablissement   VARCHAR (50) ,
-	adresse        VARCHAR (50) NOT NULL ,
-	ville           CHAR (50)  NOT NULL ,
-	code_postal     INTEGER  NOT NULL   
-);*/
-
-
-------------------------------------------------------------
--- Table: patient
-------------------------------------------------------------
-/*CREATE TABLE patient(
-	mail        VARCHAR (50) PRIMARY KEY ,
-	nom         CHAR (50)  NOT NULL ,
-	prenom      CHAR (50)  NOT NULL ,
-	mdp         VARCHAR (50) NOT NULL ,
-	telephone   VARCHAR (50)  NOT NULL 
-);*/
-
-
-------------------------------------------------------------
--- Table: prendre
-------------------------------------------------------------
-/*CREATE TABLE prendre(
-	mail           VARCHAR (50) NOT NULL ,
-	mail_patient   VARCHAR (50) NOT NULL ,
-	heure          TIMESTAMP  NOT NULL ,
-	jour           DATE  NOT NULL  ,
-	PRIMARY KEY (mail,mail_patient) ,
-	FOREIGN KEY (mail) REFERENCES doc(mail) ,
-	FOREIGN KEY (mail_patient) REFERENCES patient(mail)
-);*/
-
-
-
-------------------------------------------------------------
---        Script Postgre 
-------------------------------------------------------------
-
-
-
-------------------------------------------------------------
--- Table: doc
-------------------------------------------------------------
 CREATE TABLE doc(
 	mail            VARCHAR (50) NOT NULL ,
 	mdp             VARCHAR (50) NOT NULL ,
 	nom             CHAR (50)  NOT NULL ,
 	prenom          CHAR (50)  NOT NULL ,
 	specialite      CHAR (50)  NOT NULL ,
-	telephone       INT  NOT NULL ,
+	telephone       VARCHAR (50)  NOT NULL ,
 	etablissement   VARCHAR (50) NOT NULL ,
+	adresse   VARCHAR (50) NOT NULL ,
 	ville           CHAR (50)  NOT NULL ,
 	code_postal     INT  NOT NULL  ,
 	CONSTRAINT doc_PK PRIMARY KEY (mail)
@@ -94,7 +45,7 @@ CREATE TABLE patient(
 	nom         CHAR (50)  NOT NULL ,
 	prenom      CHAR (50)  NOT NULL ,
 	mdp         VARCHAR (50) NOT NULL ,
-	telephone   INT  NOT NULL  ,
+	telephone   VARCHAR (50)  NOT NULL  ,
 	CONSTRAINT patient_PK PRIMARY KEY (mail)
 )WITHOUT OIDS;
 

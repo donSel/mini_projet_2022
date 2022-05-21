@@ -50,8 +50,9 @@
         //else {
         //    return false;
         //}
+        print_r($arrComptes);
         foreach ($arrComptes as $val){
-            if ($val[mail] == $id && $val[mdp] == $mdp){
+            if ($val['mail'] == $mail && $val['mdp'] == $mdp){
                 return true;
             }
         }
@@ -62,12 +63,12 @@
     //mailExists(...)
     function mailExists($db, $mail, $user){
         if ($user == true){
-            $arrComptes = getComptes($conn, $mail, $mdp, true);
+            $arrComptes = getComptes($db, $mail, true);
         } else {
-            $arrComptes = getComptes($conn, $mail, $mdp, false);
+            $arrComptes = getComptes($db, $mail, false);
         }
         foreach ($arrComptes as $val){
-            if ($val[mail] == $mail){
+            if ($val['mail'] == $mail){
                 return true;
             }
         }
@@ -81,28 +82,20 @@
   
         
     //addUser(...)
-    function addUser($db, $mdp, $firstName, $lastName, $mail, $telephone){
-        // Statement compte patient
-        $stmt = $db->prepare("INSERT INTO patient (mail, nom, prenom, mdp, telephone) VALUES (:mail, :nom, :prenom, :mdp, 89654)");
+    function addUser($db, $mdp, $nom, $prenom, $mail, $telephone){
+        // Statement compte patient        
+        $stmt = $db->prepare("INSERT INTO patient (mail, nom, prenom, mdp, telephone) VALUES (:mail, :nom, :prenom, :mdp, :telephone)");
         $stmt->bindParam(':mail', $mail);
         $stmt->bindParam(':nom', $nom);
         $stmt->bindParam(':prenom', $prenom);
         $stmt->bindParam(':mdp', $mdp);
-        //$stmt->bindParam(':telephone', $telephone);
+        $stmt->bindParam(':telephone', $telephone);
         $stmt->execute();
-        echo "$mdp\n";
-        echo "$firstName\n";
-        echo "$lastName\n";
-        echo "$mail\n";
-        echo "$telephone\n";
-        
-        // Updating user array
-        $commptes = getComptes($db, $mail, $mdp, true);
     }
     
     
     //addDoc(...) 
-    function addDoc($db, $mdp, $firstName, $lastName, $mail, $telephone, $specialite, $etablissement, $adresse, $ville, $code_postal){
+    function addDoc($db, $mdp, $nom, $prenom, $mail, $telephone, $specialite, $etablissement, $adresse, $ville, $code_postal){
         // Statement compte doc
         $stmtDocTable = $db->prepare("INSERT INTO doc (mail, mdp, nom, prenom, specialite, telephone, etablissement, adresse, ville, code_postal) 
                                     VALUES (:mail, :mdp, :nom, :prenom, :specialite, :telephone, :etablissement, :adresse, :ville, :code_postal)");
@@ -118,8 +111,7 @@
         $stmtDocTable->bindParam(':code_postal', $code_postal);
         $stmtDocTable->execute();
         
-        // Updating user array
-        $commptes = getComptes($db, $mail, $mdp, false);
+        echo "doc added";
     }
     
     
@@ -182,7 +174,7 @@
     
     
     //getComptes(...)
-    function getComptes($conn, $mail, $mdp, $user){
+    function getComptes($conn, $mail, $user){
         if ($user == true){
             $request = 'SELECT * FROM patient WHERE mail=:mail';
         } else {
@@ -193,6 +185,5 @@
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC); 
     }    
-    
     
 ?>

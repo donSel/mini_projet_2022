@@ -24,8 +24,8 @@
     
     $mail = $arrFirstName[0] . '.' . $arrLastName[0] . '@gmail.com';
     //addUser($db, $mdp, $arrFirstName[0], $arrLastName[0], $mail, $tel);
-    addUser($db, 'password', 'mickaël', 'Neroda', 'mickaelmail');
-    echo $mail;
+    addUser($db, 'password', 'mickaël', 'Neroda', 'mickaelmail', '0783069282');
+    //echo $mail;
     //addUser($db, "password", "Mickaël", "Neroda", "mickael.neroda@gmail.com", '0783069282');
     $commptes = getComptes($db, $mail, $mdp, true);
     

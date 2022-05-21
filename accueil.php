@@ -23,7 +23,7 @@
                 здоровье
             </a>
             <div class="barre">
-                <button class="btn btn-outline-light" type="submit" onclick="window.location.href = 'connect.php';">Se connecter</button>
+                <button class="btn btn-outline-light" type="submit" onclick="window.location.href = 'loginUser.php';">Se connecter</button>
             </div>
             </div>
         </nav>

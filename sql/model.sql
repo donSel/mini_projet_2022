@@ -17,9 +17,57 @@
 ------------------------------------------------------------
 DROP TABLE IF EXISTS doc CASCADE;
 DROP TABLE IF EXISTS patient CASCADE;
-DROP TABLE IF EXISTS etablissement CASCADE;
-DROP TABLE IF EXISTS appartenir CASCADE;
 DROP TABLE IF EXISTS prendre CASCADE;
+
+------------------------------------------------------------
+-- Table: doc
+------------------------------------------------------------
+/*CREATE TABLE doc(
+	mail            VARCHAR (50) PRIMARY KEY ,
+	mdp             VARCHAR (50) NOT NULL ,
+	nom             CHAR (50)  NOT NULL ,
+	prenom          CHAR (50)  NOT NULL ,
+	specialite      CHAR (50)  NOT NULL ,
+	telephone       VARCHAR (50)  NOT NULL ,
+	etablissement   VARCHAR (50) ,
+	adresse        VARCHAR (50) NOT NULL ,
+	ville           CHAR (50)  NOT NULL ,
+	code_postal     INTEGER  NOT NULL   
+);*/
+
+
+------------------------------------------------------------
+-- Table: patient
+------------------------------------------------------------
+/*CREATE TABLE patient(
+	mail        VARCHAR (50) PRIMARY KEY ,
+	nom         CHAR (50)  NOT NULL ,
+	prenom      CHAR (50)  NOT NULL ,
+	mdp         VARCHAR (50) NOT NULL ,
+	telephone   VARCHAR (50)  NOT NULL 
+);*/
+
+
+------------------------------------------------------------
+-- Table: prendre
+------------------------------------------------------------
+/*CREATE TABLE prendre(
+	mail           VARCHAR (50) NOT NULL ,
+	mail_patient   VARCHAR (50) NOT NULL ,
+	heure          TIMESTAMP  NOT NULL ,
+	jour           DATE  NOT NULL  ,
+	PRIMARY KEY (mail,mail_patient) ,
+	FOREIGN KEY (mail) REFERENCES doc(mail) ,
+	FOREIGN KEY (mail_patient) REFERENCES patient(mail)
+);*/
+
+
+
+------------------------------------------------------------
+--        Script Postgre 
+------------------------------------------------------------
+
+
 
 ------------------------------------------------------------
 -- Table: doc
@@ -30,9 +78,12 @@ CREATE TABLE doc(
 	nom             CHAR (50)  NOT NULL ,
 	prenom          CHAR (50)  NOT NULL ,
 	specialite      CHAR (50)  NOT NULL ,
-	telephone       VARCHAR (50)  NOT NULL ,
-	PRIMARY KEY (mail) 
-);
+	telephone       INT  NOT NULL ,
+	etablissement   VARCHAR (50) NOT NULL ,
+	ville           CHAR (50)  NOT NULL ,
+	code_postal     INT  NOT NULL  ,
+	CONSTRAINT doc_PK PRIMARY KEY (mail)
+)WITHOUT OIDS;
 
 
 ------------------------------------------------------------
@@ -43,34 +94,9 @@ CREATE TABLE patient(
 	nom         CHAR (50)  NOT NULL ,
 	prenom      CHAR (50)  NOT NULL ,
 	mdp         VARCHAR (50) NOT NULL ,
-	telephone   VARCHAR (50)  NOT NULL ,
-	PRIMARY KEY (mail)
-);
-
-
-------------------------------------------------------------
--- Table: etablissement
-------------------------------------------------------------
-CREATE TABLE etablissement(
-	etablissement   VARCHAR (50) NOT NULL ,
-	adresse        VARCHAR (50) NOT NULL ,
-	ville           CHAR (50)  NOT NULL ,
-	code_postal     INTEGER  NOT NULL  ,
-	PRIMARY KEY (etablissement)
-);
-
-
-------------------------------------------------------------
--- Table: appartenir
-------------------------------------------------------------
-CREATE TABLE appartenir(
-	etablissement   VARCHAR (50) NOT NULL ,
-	mail            VARCHAR (50) NOT NULL  ,
-	code_postal     INTEGER  NOT NULL  ,
-	PRIMARY KEY (etablissement,mail) ,
-	FOREIGN KEY (etablissement) REFERENCES etablissement(etablissement) ,
-	FOREIGN KEY (mail) REFERENCES doc(mail)
-);
+	telephone   INT  NOT NULL  ,
+	CONSTRAINT patient_PK PRIMARY KEY (mail)
+)WITHOUT OIDS;
 
 
 ------------------------------------------------------------
@@ -79,12 +105,11 @@ CREATE TABLE appartenir(
 CREATE TABLE prendre(
 	mail           VARCHAR (50) NOT NULL ,
 	mail_patient   VARCHAR (50) NOT NULL ,
-	heure          TIMESTAMP  NOT NULL ,
-	jour           DATE  NOT NULL  ,
-	PRIMARY KEY (mail,mail_patient) ,
-	FOREIGN KEY (mail) REFERENCES doc(mail) ,
-	FOREIGN KEY (mail_patient) REFERENCES patient(mail)
-);
+	jour_heure          TIMESTAMP  NOT NULL ,
+	CONSTRAINT prendre_PK PRIMARY KEY (mail,mail_patient)
+	,CONSTRAINT prendre_doc_FK FOREIGN KEY (mail) REFERENCES doc(mail)
+	,CONSTRAINT prendre_patient0_FK FOREIGN KEY (mail_patient) REFERENCES patient(mail)
+)WITHOUT OIDS;
 
 
 

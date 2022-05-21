@@ -16,7 +16,7 @@
             "port": 5432,
             "askForPassword": true,
             "driver": "PostgreSQL",
-            "name": "projet_doctolib",
+            "name": "projet",
             "database": "doctolibdb",
             "username": "postgres"
         }

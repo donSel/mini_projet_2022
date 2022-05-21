@@ -1,5 +1,6 @@
 <?php
     include ('database.php');
+    include ('constants.php');
     
     // Enable all warnings and errors.
     ini_set('display_errors', 1);
@@ -9,7 +10,7 @@
     $arrLastName = ['ROM-PUISAIS', 'ROM DANE', 'ROLZOU', 'ROLZHAUSEN', 'ROLZEN'	, 'ROLZ', 'ROLU', 'ROLTMIT'	, 'ROLTHMEIR', 'ROLT-LEVEQUE', 'ROBICOUET', 'ROBICO', 'ROBICKEZ', 'ROBICHOY', 'ROBICHOU', 'RIESSE'];
     $arrFirstName = ['Bernard', 'Thomas' , 'Petit', 'Robert', 'Richard', 'Durand', 'Dubois', 'Moreau', 'Laurent', 'Simon', 'Michel', 'Lefebvre', 'Leroy', 'Roux', 'David', 'Bertrand'];
     //16
-    $mdp = "password";
+    $mdp = 'password';
     $tel = '0783069282';
     
     $arrSpecialite = ['proctologue', 'urologue', 'cardiologue', 'OLR', 'chirurgien de la face', 'psychiatre']; //6
@@ -21,11 +22,11 @@
     $n = count($arrLastName);
     $db = dbConnect();
     
-    $mail = $arrFirstName[0] . "." . $arrLastName[0] . "@gmail.com";
+    $mail = $arrFirstName[0] . '.' . $arrLastName[0] . '@gmail.com';
     //addUser($db, $mdp, $arrFirstName[0], $arrLastName[0], $mail, $tel);
-    //echo $mail;
-    addUser($db, "password", "Mickaël", "Neroda", "mickael.neroda@gmail.com", '0783069282');
-    addAppartenir($db, "sous-sol", "belel@wanadoo.org", 6670);
+    addUser($db, 'password', 'mickaël', 'Neroda', 'mickaelmail');
+    echo $mail;
+    //addUser($db, "password", "Mickaël", "Neroda", "mickael.neroda@gmail.com", '0783069282');
     $commptes = getComptes($db, $mail, $mdp, true);
     
     

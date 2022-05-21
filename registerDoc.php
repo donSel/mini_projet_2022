@@ -106,7 +106,7 @@ integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xX
                     // Success Message
                     echo "<span class='badge badge-success'>Vous avez créez votre compte avec succès !</span>";
                     //sleep(3);
-                    echo "<a href='loginUser.php'>Cliquez ici pour vous connecter !</a>";
+                    echo "<a href='loginDoc.php'>Cliquez ici pour vous connecter !</a>";
                 }
             } else {
                 echo "<div class='alert alert-danger' role='alert'>Les mots de passes ou les adresses mail ne correspondent pas!</div>"; //distinguer cas ereur adresse mail et mdp

@@ -9,12 +9,23 @@
           crossorigin="anonymous">
        <!-- Mon css -->
        <link href="style.css" rel="stylesheet">
-
-          
-        
    </head>
    <body>
        
+    <?php
+        require_once('php/database.php');
+        // Enable all warnings and errors.
+        ini_set('display_errors', 1);
+        error_reporting(E_ALL);
+
+        // Database connection.
+        $db = dbConnect();
+        
+        // Session start
+        session_start();
+    ?>
+   
+    <!-- Top bar -->   
     <div class="container-fluid bg-primary">
         <nav class="navbar navbar-dark">
             <div class="container-fluid">
@@ -28,5 +39,19 @@
             </div>
         </nav>
     </div>
+    
+    <br><br>
+    
+    <!-- Search Bar -->  
+    <div class="container-fluid bg-primary">
+        <nav class="navbar navbar-light bg-light">
+            <form class="form-inline">
+                <input class="form-control mr-sm-2" name="nse" type="search" placeholder="Nom, spécialité, établissement" aria-label="Search">
+                <input class="form-control mr-sm-2" name="lieu" type="search" placeholder="Lieu" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Rechercher</button>
+            </form>
+        </nav> 
+    </div>
+    
    </body>
 </html>

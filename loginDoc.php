@@ -14,8 +14,10 @@ integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xX
 
   // Database connection.
   $db = dbConnect();
-  //print_r($db);
   
+  // Session start
+  session_start();
+  echo "session id : " . session_id();
 ?>
 
 <form action="loginDoc.php" method="get">
@@ -35,17 +37,18 @@ integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xX
     if (isset($_GET['valider'])){
         $mail = $_GET['mail'];
         $mdp = $_GET['mdp'];
-        echo $mail;
-        echo $mdp;
         
         if (isGoodLogin($db, $mail, $mdp, false)){
-            echo "login is good";
             //redirection page recherche rdv + session
-            session_start();
+            $compte = getCompte($db, $mail, $mdp, true);
             $_SESSION['mail']= $mail;
+            $_SESSION['nom'] = $compte[0]['nom'];
+            $_SESSION['prenom'] = $compte[0]['prenom'];
+            $_SESSION['connected']= true;
             //header('Location : accueil.php');
             echo "<a href='accueil.php'>CLIQUE</a>";
         } else {
+            $_SESSION['connected']= false;
             echo "<div class='alert alert-danger' role='alert'>Ce compte n'existe pas!</div>"; //reprendre truc des tp pour faire une petite alete sympa
         }
     }

@@ -23,6 +23,7 @@
         
         // Session start
         session_start();
+        echo "session ID : " . session_id();
     ?>
    
     <!-- Top bar -->   
@@ -42,16 +43,62 @@
     
     <br><br>
     
-    <!-- Search Bar -->  
+    <!-- Search Bar -->
     <div class="container-fluid bg-primary">
         <nav class="navbar navbar-light bg-light">
-            <form class="form-inline">
+            <form class="form-inline" action="accueil.php" method="get">
                 <input class="form-control mr-sm-2" name="nse" type="search" placeholder="Nom, spécialité, établissement" aria-label="Search">
                 <input class="form-control mr-sm-2" name="lieu" type="search" placeholder="Lieu" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Rechercher</button>
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit" name="rechercher">Rechercher</button>
             </form>
         </nav> 
-    </div>
+    </div> 
+    
+    <?php
+        if (isset($_GET['rechercher'])){
+            
+            //une seule fonction
+            
+            if (isset($_GET['nse']) && isset($_GET['lieu'])){
+                $nse = $_GET['nse'];
+                $lieu = $_GET['lieu'];
+                echo "je ne sait pas :(";
+            }
+            
+            if (isset($_GET['lieu'])){
+                $lieu = $_GET['lieu'];
+                
+            }
+            
+            if (isset($_GET['nse'])){
+                $nse = $_GET['nse'];
+                
+            }
+        }
+    ?>
+    
+    <?php
+        //if (!empty($_SESSION['mail'])){
+        //    echo "<h2>Bienvenue " . $_SESSION['nom'] . " " . $_SESSION['prenom'] . " !</h2>";
+        //}
+        echo "connected : " . $_SESSION['connected'];
+        if (!empty($_SESSION['connected']) && $_SESSION['connected']){
+            // Wer=lcome message
+            echo "<h2>Bienvenue " . $_SESSION['nom'] . " " . $_SESSION['prenom'] . " !</h2>";
+            // Search Bar
+            //echo "
+            //    <div class='container-fluid bg-primary'>
+            //        <nav class='navbar navbar-light bg-light'>
+            //        <form class='form-inline'>
+            //            <input class='form-control mr-sm-2' name='nse' type='search' placeholder='Nom, spécialité, établissement' aria-label='Search'>
+            //            <input class='form-control mr-sm-2' name='lieu' type='search' placeholder='Lieu' aria-label='Search'>
+            //            <button class='btn btn-outline-success my-2 my-sm-0' type='submit'>Rechercher</button>
+            //        </form>
+            //    </nav> 
+            //    </div>
+            //";
+        }
+    ?>
     
    </body>
 </html>

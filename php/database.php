@@ -34,9 +34,9 @@
     //isGoodLogin(...)
     function isGoodLogin($conn, $mail, $mdp, $user){ 
         if ($user == true){
-            $arrComptes = getComptes($conn, $mail, $mdp, true);
+            $arrCompte = getCompte($conn, $mail, $mdp, true);
         } else {
-            $arrComptes = getComptes($conn, $mail, $mdp, false);
+            $arrCompte = getCompte($conn, $mail, $mdp, false);
         }
         //$count = 0; Old version
         //foreach ($arrComptes as $val){
@@ -50,8 +50,7 @@
         //else {
         //    return false;
         //}
-        print_r($arrComptes);
-        foreach ($arrComptes as $val){
+        foreach ($arrCompte as $val){
             if ($val['mail'] == $mail && $val['mdp'] == $mdp){
                 return true;
             }
@@ -63,11 +62,11 @@
     //mailExists(...)
     function mailExists($db, $mail, $user){
         if ($user == true){
-            $arrComptes = getComptes($db, $mail, true);
+            $arrCompte = getCompte($db, $mail, true);
         } else {
-            $arrComptes = getComptes($db, $mail, false);
+            $arrCompte = getCompte($db, $mail, false);
         }
-        foreach ($arrComptes as $val){
+        foreach ($arrCompte as $val){
             if ($val['mail'] == $mail){
                 return true;
             }
@@ -137,12 +136,72 @@
     }
     
     
-    //getEtablissement(...)
-    function getEtablissement($db, $etablissement, $code_postal){ // faire val par défaut etc... pour fonction recherche
-        $request = 'SELECT * FROM doc WHERE etablissement=:etablissement and code_postal=:code_postal';
+    //getCodeEtablissementDoc(...)
+    //function getCodeEtablissementDoc($db, $etablissement, $code_postal){ // faire val par défaut etc... pour fonction recherche
+    //    $request = 'SELECT * FROM doc WHERE etablissement=:etablissement and code_postal=:code_postal';
+    //    $statement = $conn->prepare($request);
+    //    $statement->bindParam(':code_postal', $code_postal);
+    //    $statement->bindParam(':etablissement', $etablissement);
+    //    $statement->execute();
+    //    return $statement->fetchAll(PDO::FETCH_ASSOC); 
+    //}
+
+    
+    //getVilleEtablissementDoc(...)
+    //function getVilleEtablissementDoc($db, $etablissement, $ville){ // faire val par défaut etc... pour fonction recherche
+    //    $request = 'SELECT * FROM doc WHERE etablissement=:etablissement and ville=:ville';
+    //    $statement = $conn->prepare($request);
+    //    $statement->bindParam(':ville', $ville);
+    //    $statement->bindParam(':etablissement', $etablissement);
+    //    $statement->execute();
+    //    return $statement->fetchAll(PDO::FETCH_ASSOC); 
+    //}
+    
+    //getCodeDoc(...)
+    function getCodeDoc($db, $code_postal){ // faire val par défaut etc... pour fonction recherche
+        $request = 'SELECT * FROM doc WHERE code_postal=:code_postal';
         $statement = $conn->prepare($request);
         $statement->bindParam(':code_postal', $code_postal);
-        $statement->bindParam(':etablissement', $etablissement);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC); 
+    }
+
+    
+    //getVilleDoc(...)
+    function getVilleDoc($db, $ville){ // faire val par défaut etc... pour fonction recherche
+        $request = 'SELECT * FROM doc WHERE ville=:ville';
+        $statement = $conn->prepare($request);
+        $statement->bindParam(':ville', $ville);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC); 
+    }
+    
+    
+    //getNomDoc(...)
+    function getNomDoc($db, $nse){ // faire val par défaut etc... pour fonction recherche
+        $request = 'SELECT * FROM doc WHERE nom=:nom';
+        $statement = $conn->prepare($request);
+        $statement->bindParam(':nom', $nse);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC); 
+    }
+
+    
+    //getSpecialiteDoc(...)
+    function getSpecialiteDoc($db, $nse){ // faire val par défaut etc... pour fonction recherche
+        $request = 'SELECT * FROM doc WHERE specialite=:specialite';
+        $statement = $conn->prepare($request);
+        $statement->bindParam(':specialite', $nse);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC); 
+    }
+    
+    
+    //getEtablissementDoc(...)
+    function getEtablissementDoc($db, $nse){ // faire val par défaut etc... pour fonction recherche
+        $request = 'SELECT * FROM doc WHERE etablissement=:etablissement';
+        $statement = $conn->prepare($request);
+        $statement->bindParam(':etablissement', $nse);
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC); 
     }
@@ -172,9 +231,8 @@
     //takeAppointment(...)
     
     
-    
-    //getComptes(...)
-    function getComptes($conn, $mail, $user){
+    //getCompte(...)
+    function getCompte($conn, $mail, $user){
         if ($user == true){
             $request = 'SELECT * FROM patient WHERE mail=:mail';
         } else {
@@ -185,5 +243,55 @@
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC); 
     }    
+    
+    
+    //getComptes(...)
+    function getComptes($conn, $user){
+        if ($user == true){
+            $request = 'SELECT * FROM patient';
+        } else {
+            $request = 'SELECT * FROM doc';
+        }
+        $statement = $conn->prepare($request);
+        $statement->bindParam(':mail', $mail);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC); 
+    }   
+    
+    
+    //----------------------------------------------------------------------------
+    //---------------------------------------------------------- Functions to research a doctor ----------------------------------------------------------
+    //----------------------------------------------------------------------------
+ 
+    //faire une seule fonction avec valeurs par défaut afin d'appeler 
+    
+    //getDocLieu(...)
+    function getDocLieu($db, $lieu){
+        $arr = getCodeDoc($db, $lieu);
+        if ($count($arr) != 0){
+            return $arr;
+        }
+        else {
+            $arr = getVilleDoc($db, $lieu);
+            if ($count($arr) != 0){
+                return $arr;
+            }
+            else {
+                return $arr;
+            }
+        }
+    }
+    
+    
+    //getDocNSE(...)
+    function getDocNSE($db, $lieu){
+        echo "rien";
+    }
+    
+    
+    //getDocLieuAndNSE(...)
+    function getDocLieuAndNSE($db, $lieu){
+        echo "rien";
+    }
     
 ?>

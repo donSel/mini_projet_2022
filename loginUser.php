@@ -14,6 +14,11 @@ integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xX
 
   // Database connection.
   $db = dbConnect();
+  
+  // Session start
+  session_start();
+  //echo "session ID : " . session_id();
+  echo "session id : " . session_id();
 ?>
 
 <a class="btn btn-primary" href="accueil.php" role="button">Retour à l'accueil</a>
@@ -36,17 +41,18 @@ integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xX
     if (isset($_GET['valider'])){
         $mail = $_GET['mail'];
         $mdp = $_GET['mdp'];
-        echo "mail : " . $mail;
-        echo " mdp : " . $mdp;
         
         if (isGoodLogin($db, $mail, $mdp, true)){
-            echo "login is good";
             //redirection page recherche rdv + session
-            session_start();
+            $compte = getCompte($db, $mail, $mdp, true);
             $_SESSION['mail']= $mail;
+            $_SESSION['nom'] = $compte[0]['nom'];
+            $_SESSION['prenom'] = $compte[0]['prenom'];
+            $_SESSION['connected']= true;
             //header('Location : accueil.php');
             echo "<a href='accueil.php'>CLIQUE</a>";
         } else {
+            $_SESSION['connected']= false;
             echo "<div class='alert alert-danger' role='alert'>Ce compte n'existe pas!</div>"; //reprendre truc des tp pour faire une petite alete sympa
         }
     }

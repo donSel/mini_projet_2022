@@ -55,25 +55,13 @@
     </div> 
     
     <?php
-        if (isset($_GET['rechercher'])){
-            
-            //une seule fonction
-            
-            if (isset($_GET['nse']) && isset($_GET['lieu'])){
-                $nse = $_GET['nse'];
-                $lieu = $_GET['lieu'];
-                echo "je ne sait pas :(";
-            }
-            
-            if (isset($_GET['lieu'])){
-                $lieu = $_GET['lieu'];
-                
-            }
-            
-            if (isset($_GET['nse'])){
-                $nse = $_GET['nse'];
-                
-            }
+        if (isset($_GET['rechercher'])){ // spécialité/lieu fonctionne pas etablissement/lieu aussi
+            echo "lieu : " . $_GET['lieu'];
+            echo "  NSE : " . $_GET['nse'];
+            $searchArr = searchDoc($db, $_GET['lieu'], $_GET['nse']);
+            $n = count($searchArr);
+            echo "<h3>" . $n . "résultats trouvés</h3>";
+            print_r($searchArr);
         }
     ?>
     
@@ -81,11 +69,11 @@
         //if (!empty($_SESSION['mail'])){
         //    echo "<h2>Bienvenue " . $_SESSION['nom'] . " " . $_SESSION['prenom'] . " !</h2>";
         //}
-        echo "connected : " . $_SESSION['connected'];
+        //echo "connected : " . $_SESSION['connected'];
         if (!empty($_SESSION['connected']) && $_SESSION['connected']){
-            // Wer=lcome message
+            // Welcome message
             echo "<h2>Bienvenue " . $_SESSION['nom'] . " " . $_SESSION['prenom'] . " !</h2>";
-            // Search Bar
+            // Search Bar in creation processs 
             //echo "
             //    <div class='container-fluid bg-primary'>
             //        <nav class='navbar navbar-light bg-light'>

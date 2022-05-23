@@ -64,8 +64,49 @@
     }
     
     
-    //----------------------------------------------------------------------------
-    //---------------------------------------------------------- Functions to add information to tables ----------------------------------------------------------
+    //isAppointmentPossible(...)
+    function isAppointmentPossible($db, $mailDoc, $jour, $heure){
+        // display informations
+        //$rdvYear = $jour->format('Y');
+        //$rdvMonth = $jour->format('d');
+        //$rdvDay = $jour->format('m');
+        //$rdvHour = $heure->format('i');
+        //echo "<br><br><hr>Rdv date hour : " . $rdvDay . "-" . $rdvMonth . "-" . $rdvYear . "   " . $rdvHour;
+        
+        // check if the appointment jour/day has not been already taken
+        $arrAppointment = getAppointmentDay($db, $mailDoc, $jour);
+        foreach ($arrAppointment as $key => $value) {
+            if ($value['heure'] == $heure){
+                return false;
+            }
+        }
+        return true;
+    }    
+    
+    
+    //takeAppointment(...)
+    function takeAppointment($db, $mailDoc, $mailPatient, $jour, $heure){
+        // check if appointment possible
+        if (!isAppointmentPossible($db, $mailDoc, $jour, $heure)){
+            echo "Appointment is impossible to take";
+            return false;
+        }
+        
+        // adding appointment to the database
+        $stmt = $db->prepare("INSERT INTO prendre (mail, mail_patient, jour, heure) VALUES (:mail, :mail_patient, :jour, :heure)");
+        $stmt->bindParam(':mail', $mailDoc);
+        $stmt->bindParam(':mail_patient', $mailPatient);
+        //$jourRdv = $jour->format('Y-m-d'); normalement pas besoin de conversion car chaines de caracteres passée en parametre
+        //$heureRdv = $heure->format('Y-m-d');
+        $stmt->bindParam(':jour', $jour);
+        $stmt->bindParam(':heure', $heure);
+        $stmt->execute();
+        return true;
+    }   
+    
+    
+        //----------------------------------------------------------------------------
+        //---------------------------------------------------------- Functions to add information to tables ----------------------------------------------------------
     //----------------------------------------------------------------------------
   
         
@@ -104,19 +145,7 @@
         $stmtDocTable->bindParam(':adresse', $adresse);
         $stmtDocTable->bindParam(':ville', $ville);
         $stmtDocTable->bindParam(':code_postal', $code_postal);
-        $stmtDocTable->execute();
-        
-        echo "doc added";
-    }
-    
-    
-    //takeAppointment(...)
-    function takeAppointment($db, $mail, $mail_patient, $jour_heure){
-        $stmt = $db->prepare("INSERT INTO prendre (mail, mail_patient, jour_heure) VALUES (:mail, :mail_patient, :jour_heure)");
-        $stmt->bindParam(':mail', $mail);
-        $stmt->bindParam(':mail_patient', $mail_patient);
-        $stmt->bindParam(':jour_heure', $jour_heure);
-        $stmt->execute();
+        $stmtDocTable->execute();        
     }
     
     
@@ -124,6 +153,15 @@
     //---------------------------------------------------------- Functions to get tables ----------------------------------------------------------
     //----------------------------------------------------------------------------
     
+    //getAppointmentDay(...)
+    function getAppointmentDay($db, $mailDoc, $jour){
+        $request = 'SELECT * FROM prendre WHERE mail=:mail and jour=:jour';
+        $statement = $db->prepare($request);
+        $statement->bindParam(':mail', $mail);
+        $statement->bindParam(':jour', $mail);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC); 
+    }
     
     //getEtablissements(...)
     function getEtablissements($db){

@@ -1,0 +1,1 @@
+INSERT INTO prendre (mail, mail_patient, jour, heure) VALUES ('Bertrand.RIESSE@gmail.com', 'Dubois.ROLU@gmail.com', '2022-05-23', '15:00');

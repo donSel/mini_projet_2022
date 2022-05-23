@@ -21,7 +21,7 @@
          
     
     //----------------------------------------------------------------------------
-    //---------------------------------------------------------- Additional functions ----------------------------------------------------------
+    //---------------------------------------------------------- Verification funciton  ----------------------------------------------------------
     //----------------------------------------------------------------------------
   
     
@@ -38,18 +38,7 @@
         } else {
             $arrCompte = getCompte($db, $mail, $mdp, false);
         }
-        //$count = 0; Old version
-        //foreach ($arrComptes as $val){
-        //    if ($val[mail] == $id && $val[mdp] == $mdp){
-        //        $count = $count + 1;
-        //    }
-        //}
-        //if ($count != 0){
-        //    return true;
-        //}
-        //else {
-        //    return false;
-        //}
+
         foreach ($arrCompte as $val){
             if ($val['mail'] == $mail && $val['mdp'] == $mdp){
                 return true;
@@ -74,7 +63,7 @@
         return false;
     }
     
-     
+    
     //----------------------------------------------------------------------------
     //---------------------------------------------------------- Functions to add information to tables ----------------------------------------------------------
     //----------------------------------------------------------------------------
@@ -123,7 +112,7 @@
     
     //takeAppointment(...)
     function takeAppointment($db, $mail, $mail_patient, $jour_heure){
-        $stmt = $db->prepare("INSERT INTO prendre (mail, mail_patient, jour_jeure) VALUES (:mail, :mail_patient, :jour_heure)");
+        $stmt = $db->prepare("INSERT INTO prendre (mail, mail_patient, jour_heure) VALUES (:mail, :mail_patient, :jour_heure)");
         $stmt->bindParam(':mail', $mail);
         $stmt->bindParam(':mail_patient', $mail_patient);
         $stmt->bindParam(':jour_heure', $jour_heure);
@@ -141,28 +130,61 @@
         $statement = $db->query('SELECT * FROM etablissement');
         return $statement->fetchAll(PDO::FETCH_ASSOC); 
     }
+        
+    
+    //getAppointmentsDoc(...)
+    function getAppointmentsDoc($db, $mail){
+        $request = 'SELECT * FROM prendre WHERE mail=:mail';
+        $statement = $db->prepare($request);
+        $statement->bindParam(':mail', $mail);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC); 
+    }
     
     
-    //getCodeEtablissementDoc(...)
-    //function getCodeEtablissementDoc($db, $etablissement, $code_postal){ // faire val par défaut etc... pour fonction recherche
-    //    $request = 'SELECT * FROM doc WHERE etablissement=:etablissement and code_postal=:code_postal';
-    //    $statement = $conn->prepare($request);
-    //    $statement->bindParam(':code_postal', $code_postal);
-    //    $statement->bindParam(':etablissement', $etablissement);
-    //    $statement->execute();
-    //    return $statement->fetchAll(PDO::FETCH_ASSOC); 
-    //}
-
+    //getOldAppointmentsUser(...)
+    function getOldAppointmentsUser($db, $mail_patient, $mail){
+        $request = 'SELECT * FROM prendre WHERE mail=:mail and mail_patient=:mail_patient';
+        $statement = $db->prepare($request);
+        $statement->bindParam(':mail', $mail);
+        $statement->bindParam(':mail_patient', $mail_patient);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC); 
+    }
     
-    //getVilleEtablissementDoc(...)
-    //function getVilleEtablissementDoc($db, $etablissement, $ville){ // faire val par défaut etc... pour fonction recherche
-    //    $request = 'SELECT * FROM doc WHERE etablissement=:etablissement and ville=:ville';
-    //    $statement = $conn->prepare($request);
-    //    $statement->bindParam(':ville', $ville);
-    //    $statement->bindParam(':etablissement', $etablissement);
-    //    $statement->execute();
-    //    return $statement->fetchAll(PDO::FETCH_ASSOC); 
-    //}
+    
+    //getCompte(...)
+    function getCompte($db, $mail, $user){
+        if ($user == true){
+            $request = 'SELECT * FROM patient WHERE mail=:mail';
+        } else {
+            $request = 'SELECT * FROM doc WHERE mail=:mail';
+        }
+        $statement = $db->prepare($request);
+        $statement->bindParam(':mail', $mail);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC); 
+    }    
+    
+    
+    //getComptes(...)
+    function getComptes($db, $user){
+        if ($user == true){
+            $request = 'SELECT * FROM patient';
+        } else {
+            $request = 'SELECT * FROM doc';
+        }
+        $statement = $db->prepare($request);
+        $statement->bindParam(':mail', $mail);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC); 
+    }   
+    
+    
+    //----------------------------------------------------------------------------
+    //---------------------------------------------------------- Functions to research a doctor ----------------------------------------------------------
+    //----------------------------------------------------------------------------
+ 
     
     //getCodeDoc(...)
     function getCodeDoc($db, $code_postal){ 
@@ -226,10 +248,10 @@
 
     
     //getLieuSpecialiteDoc(...)
-    function getLieuSpecialiteDoc($db, $nom, $specialite){ 
-        $request = 'SELECT * FROM doc WHERE nom=:nom and specialite=:specialite';
+    function getLieuSpecialiteDoc($db, $specialite, $ville){ 
+        $request = 'SELECT * FROM doc WHERE ville=:ville and specialite=:specialite';
         $statement = $db->prepare($request);
-        $statement->bindParam(':nom', $nom);
+        $statement->bindParam(':ville', $ville);
         $statement->bindParam(':specialite', $specialite);
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC); 
@@ -237,73 +259,15 @@
     
     
     //getLieuEtablissementDoc(...)
-    function getLieuEtablissementDoc($db, $nom, $etablissement){
-        $request = 'SELECT * FROM doc WHERE nom=:nom and etablissement=:etablissement';
+    function getLieuEtablissementDoc($db, $etablissement, $ville){
+        $request = 'SELECT * FROM doc WHERE ville=:ville and etablissement=:etablissement';
         $statement = $db->prepare($request);
-        $statement->bindParam(':nom', $nom);
         $statement->bindParam(':etablissement', $etablissement);
+        $statement->bindParam(':ville', $ville);
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC); 
     }
     
-    
-    //getAppointmentsDoc(...)
-    function getAppointmentsDoc($db, $mail){
-        $request = 'SELECT * FROM prendre WHERE mail=:mail';
-        $statement = $db->prepare($request);
-        $statement->bindParam(':mail', $mail);
-        $statement->execute();
-        return $statement->fetchAll(PDO::FETCH_ASSOC); 
-    }
-    
-    
-    //getOldAppointmentsUser(...)
-    function getOldAppointmentsUser($db, $mail_patient, $mail){
-        $request = 'SELECT * FROM prendre WHERE mail=:mail and mail_patient=:mail_patient';
-        $statement = $db->prepare($request);
-        $statement->bindParam(':mail', $mail);
-        $statement->bindParam(':mail_patient', $mail_patient);
-        $statement->execute();
-        return $statement->fetchAll(PDO::FETCH_ASSOC); 
-    }
-    
-    
-    //takeAppointment(...)
-    
-    
-    //getCompte(...)
-    function getCompte($db, $mail, $user){
-        if ($user == true){
-            $request = 'SELECT * FROM patient WHERE mail=:mail';
-        } else {
-            $request = 'SELECT * FROM doc WHERE mail=:mail';
-        }
-        $statement = $db->prepare($request);
-        $statement->bindParam(':mail', $mail);
-        $statement->execute();
-        return $statement->fetchAll(PDO::FETCH_ASSOC); 
-    }    
-    
-    
-    //getComptes(...)
-    function getComptes($db, $user){
-        if ($user == true){
-            $request = 'SELECT * FROM patient';
-        } else {
-            $request = 'SELECT * FROM doc';
-        }
-        $statement = $db->prepare($request);
-        $statement->bindParam(':mail', $mail);
-        $statement->execute();
-        return $statement->fetchAll(PDO::FETCH_ASSOC); 
-    }   
-    
-    
-    //----------------------------------------------------------------------------
-    //---------------------------------------------------------- Functions to research a doctor ----------------------------------------------------------
-    //----------------------------------------------------------------------------
- 
-    //faire une seule fonction avec valeurs par défaut afin d'appeler 
     
     //getDocLieu(...) //fonctionne avec code postal et nom ville
     function getDocLieu($db, $lieu){
@@ -354,6 +318,7 @@
         $lieu = strtolower($lieu);
         $nse = strtolower($nse);
         $arr = getLieuNomDoc($db, $nse, $lieu);
+        echo "length array DocLieuNom : " . count($arr);
         if (count($arr) != 0){
             return $arr;
         }

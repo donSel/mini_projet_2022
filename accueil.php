@@ -55,12 +55,12 @@
     </div> 
     
     <?php
-        if (isset($_GET['rechercher'])){ // spécialité/lieu fonctionne pas etablissement/lieu aussi
+        if (isset($_GET['rechercher'])){ 
             echo "lieu : " . $_GET['lieu'];
             echo "  NSE : " . $_GET['nse'];
             $searchArr = searchDoc($db, $_GET['lieu'], $_GET['nse']);
             $n = count($searchArr);
-            echo "<h3>" . $n . "résultats trouvés</h3>";
+            echo "<h3>" . $n . " résultats trouvés</h3>";
             print_r($searchArr);
         }
     ?>

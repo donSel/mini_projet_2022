@@ -62,18 +62,7 @@
         }
         return false;
     }
-    
-    
-    //takeAppointment(...)
-    function takeAppointment($db, $mailDoc, $mailPatient, $jour, $heure){
-        // check if appointment possible
-        if (!isAppointmentPossible($db, $mailDoc, $jour, $heure)){
-            echo "Appointment is impossible to take";
-            return false;
-        }
         
-        
-    
     
     //----------------------------------------------------------------------------
     //---------------------------------------------------------- Functions to add information to tables ----------------------------------------------------------
@@ -142,14 +131,14 @@
     
     
     //getOldAppointmentsUser(...)
-    function getOldAppointmentsUser($db, $mail_patient, $mail){
-        $request = 'SELECT * FROM prendre WHERE mail=:mail and mail_patient=:mail_patient';
-        $statement = $db->prepare($request);
-        $statement->bindParam(':mail', $mail);
-        $statement->bindParam(':mail_patient', $mail_patient);
-        $statement->execute();
-        return $statement->fetchAll(PDO::FETCH_ASSOC); 
-    }
+    //function getOldAppointmentsUser($db, $mail_patient, $mail){
+    //    $request = 'SELECT * FROM prendre WHERE mail=:mail and mail_patient=:mail_patient';
+    //    $statement = $db->prepare($request);
+    //    $statement->bindParam(':mail', $mail);
+    //    $statement->bindParam(':mail_patient', $mail_patient);
+    //    $statement->execute();
+    //    return $statement->fetchAll(PDO::FETCH_ASSOC); 
+    //}
     
     
     //getCompte(...)
@@ -178,6 +167,52 @@
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC); 
     }   
+    
+    
+    // getOldAppointments(...)
+    function getOldAppointments($db, $mailUser){
+        // getting current date/time
+        $date = new DateTime();
+        $jour = $date->format('Y-m-d');
+        $heure = $date->format('G:i');
+        $heure = $heure . ":00";
+        
+        //$request = "SELECT * FROM prendre WHERE jour::date<:jour and heure::time<:heure + '1 minute'::interval and mail_patient=:mail_patient"; 
+        //$statement = $db->prepare($request);
+        //$statement->bindParam(':jour', $jour);
+        //$statement->bindParam(':heure', $heure);
+        //$statement->bindParam(':mail_patient', $mailUser);
+        //$statement->execute();
+        //$result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        
+        $request = "SELECT * FROM prendre WHERE jour::date<:jour and heure::time<:heure + '1 minute'::interval and mail_patient=:mail_patient"; 
+        $statement = $db->prepare($request);
+        $statement->bindParam(':jour', $jour);
+        $statement->bindParam(':heure', $heure);
+        $statement->bindParam(':mail_patient', $mailUser);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+        
+        //// if the current day is different from the last day appointment
+        //if (count($result) != 0){
+        //    return $result;
+        //}
+        //
+        //$arrAppointment = getAppointmentsDoc($db, $mailUser);
+        //
+        //// if the current day is the same as the last appointment
+        //if ($jour == $arrAppointment[array_key_last($arrAppointment)]['jour']){
+        //    $request = "SELECT * FROM prendre WHERE heure::time<:heure + '1 minute'::interval and mail_patient=:mail_patient"; 
+        //    $statement = $db->prepare($request);
+        //    $statement->bindParam(':heure', $heure);
+        //    $statement->bindParam(':mail_patient', $mailUser);
+        //    $statement->execute();
+        //    return $statement->fetchAll(PDO::FETCH_ASSOC);
+        //}
+        //else {
+        //    return []; // the current day is no the same as the last appointment and the last appointment day is greater than the current one
+        //}
+    }
     
     
     //----------------------------------------------------------------------------
@@ -317,7 +352,6 @@
         $lieu = strtolower($lieu);
         $nse = strtolower($nse);
         $arr = getLieuNomDoc($db, $nse, $lieu);
-        echo "length array DocLieuNom : " . count($arr);
         if (count($arr) != 0){
             return $arr;
         }
@@ -355,15 +389,21 @@
 //---------------------------------------------------------- Functions to take an appointment ----------------------------------------------------------
 //----------------------------------------------------------------------------
 
-
-    // adding appointment to the database
-    $stmt = $db->prepare("INSERT INTO prendre (mail, mail_patient, jour, heure) VALUES (:mail, :mail_patient, :jour, :heure)");
-    $stmt->bindParam(':mail', $mailDoc);
-    $stmt->bindParam(':mail_patient', $mailPatient);
-    $stmt->bindParam(':jour', $jour);
-    $stmt->bindParam(':heure', $heure);
-    $stmt->execute();
-    return true;
+    //takeAppointment(...)
+    function takeAppointment($db, $mailDoc, $mailPatient, $jour, $heure){
+        // check if appointment possible
+        if (!isAppointmentPossible($db, $mailDoc, $jour, $heure)){
+            echo "Appointment is impossible to take";
+            return false;
+        }
+        // adding appointment to the database
+        $stmt = $db->prepare("INSERT INTO prendre (mail, mail_patient, jour, heure) VALUES (:mail, :mail_patient, :jour, :heure)");
+        $stmt->bindParam(':mail', $mailDoc);
+        $stmt->bindParam(':mail_patient', $mailPatient);
+        $stmt->bindParam(':jour', $jour);
+        $stmt->bindParam(':heure', $heure);
+        $stmt->execute();
+        return true;
     }   
 
 

@@ -17,8 +17,6 @@ integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xX
   
   // Session start
   session_start();
-  //echo "session ID : " . session_id();
-  echo "session id : " . session_id();
 ?>
 
 <a class="btn btn-primary" href="accueil.php" role="button">Retour à l'accueil</a>
@@ -43,14 +41,14 @@ integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xX
         $mdp = $_GET['mdp'];
         
         if (isGoodLogin($db, $mail, $mdp, true)){
-            //redirection page recherche rdv + session
+            // Creating session
             $compte = getCompte($db, $mail, $mdp, true);
             $_SESSION['mail']= $mail;
             $_SESSION['nom'] = $compte[0]['nom'];
             $_SESSION['prenom'] = $compte[0]['prenom'];
             $_SESSION['connected']= true;
-            //header('Location : accueil.php');
-            echo "<a href='accueil.php'>CLIQUE</a>";
+            $_SESSION['isUser'] = true;
+            echo "<span class='badge badge-success'>Vous vous êtes connectés avec succès !</span>";
         } else {
             $_SESSION['connected']= false;
             echo "<div class='alert alert-danger' role='alert'>Ce compte n'existe pas!</div>"; //reprendre truc des tp pour faire une petite alete sympa

@@ -25,29 +25,21 @@
         //echo "session ID : " . session_id();
         
         // Informations
-        //$mailDoc = $_SESSION['mailDoc'];
-        $mailDoc = 'Bertrand.RIESSE@gmail.com';
-        //$mailUser = $_SESSION['mail'];
-        $mailUser = 'Dubois.ROLU@gmail.com';
+        $_SESSION['mailDoc'] = $_GET['button'];
+        $mailDoc = $_SESSION['mailDoc'];
+        echo "mail Doc : " . $mailDoc;
+        //$mailDoc = 'Bertrand.RIESSE@gmail.com';
+        $mailUser = $_SESSION['mail'];
+        echo "mail Doc : " . $mailUser;
+        //$mailUser = 'Dubois.ROLU@gmail.com';
+        
+        // get current date
+        $date = new DateTime();
+        $today = $date->format('Y-m-d');
     ?>
 
     <?php
-        $date = new DateTime();
-        //$jourRdv = "24-05-2022";    
-        //$heureRdv = "15:00";
-        //$jourRdv = new DateTime($jourRdv);
-        //$heureRdv = new DateTime($heureRdv);
-        //$jourRdv = $jourRdv->format('Y-m-d');
-        //$heureRdv = $heureRdv->format('G:i');
-        //
-        //echo 'date rdv : ' . $jourRdv->format('Y-m-d');
-        //echo 'heure rdv : ' . $heureRdv->format('G:i');
-        //echo 'type date rdv : ' . $jourRdv->format('Y-m-d');
-        //echo 'type heure rdv : ' . $heureRdv->format('G:i');
-                
-        //echo = $takeAppointment($db, $mailDoc, $mailUser, $jourRdv, $heureRdv);
         
-        $today = $date->format('Y-m-d');
         echo "<form action='takeAppointment.php' method='get'>";
         echo "  <label> Veuillez saisir le date du rendez-vous souhaité : <br>";
         echo "      <input type='date' id='start' name='calendar' value=$today  min=$today >";
@@ -73,10 +65,11 @@
             // checking if informations are ok and taking appointment             
             $valid = takeAppointment($db, $mailDoc, $mailUser, $dayRdv, $hourRdv);
             if ($valid == true){
-                echo "Votre rendez-vous a été pris !"; //mettre petite banière verte
+                echo "<span class='badge badge-success'>Votre rendez-vous a été pris !</span>"; //mettre petite banière verte
             }
             else {
-                echo "Rendez vous impossible à prendre";
+                
+                echo "<div class='alert alert-danger' role='alert'>Rendez vous impossible à prendre</div>";
             }
         }
         else{

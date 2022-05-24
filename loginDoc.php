@@ -20,6 +20,8 @@ integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xX
   echo "session id : " . session_id();
 ?>
 
+<a class="btn btn-primary" href="accueil.php" role="button">Retour à l'accueil</a>
+
 <form action="loginDoc.php" method="get">
   <div class="form-group">
     <label for="inputAuteurLastName">Adresse mail</label>
@@ -45,8 +47,8 @@ integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xX
             $_SESSION['nom'] = $compte[0]['nom'];
             $_SESSION['prenom'] = $compte[0]['prenom'];
             $_SESSION['connected']= true;
-            //header('Location : accueil.php');
-            echo "<a href='accueil.php'>CLIQUE</a>";
+            $_SESSION['isUser'] = false;
+            echo "<span class='badge badge-success'>Vous vous êtes connectés avec succès !</span>";
         } else {
             $_SESSION['connected']= false;
             echo "<div class='alert alert-danger' role='alert'>Ce compte n'existe pas!</div>"; //reprendre truc des tp pour faire une petite alete sympa

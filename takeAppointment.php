@@ -55,19 +55,22 @@
         </label>
         <label for="appt">Choisissez un horraire pour votre rendez-vous:</label>
             <input type="time" id="appt" name="hour" step="3600" min="09:00" max="18:00" required>
-            <small>Rendez possibles entre 9:00 et 18:00</small>
+            <small>Rendez possibles entre 9:00 et 18:00 toutes les heures</small>
         </label>
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit" name="valider">Valider</button>
     </form>
     
     <?php 
-        if (isset($_GET['valider'])) {
+        $statement = $db->query('SELECT * FROM prendre');
+        print_r($statement->fetchAll(PDO::FETCH_ASSOC)); 
+        
+        if (isset($_GET['valider'])) { 
             // getting informations
             $dayRdv = $_GET['calendar'];
             $hourRdv = $_GET['hour'];
             echo "date rdv : " . $dayRdv;
             echo "horraire rdv : " . $hourRdv;
-            // checking if informations are ok and taking appointment 
+            // checking if informations are ok and taking appointment             
             $valid = takeAppointment($db, $mailDoc, $mailUser, $dayRdv, $hourRdv);
             if ($valid == true){
                 echo "Votre rendez-vous a été pris !"; //mettre petite banière verte

@@ -1,4 +1,4 @@
-'' /*
+/*
  * File: /var/www/html/php/projet/code/model.sql
  * Project: /var/www/html/php/projet/code
  * Created Date: Thursday May 5th 2022
@@ -58,9 +58,9 @@ CREATE TABLE prendre(
 	mail_patient   VARCHAR (50) NOT NULL ,
 	jour          DATE  NOT NULL ,
 	heure          TIME  NOT NULL ,
-	CONSTRAINT prendre_PK PRIMARY KEY (mail,mail_patient)
-	,CONSTRAINT prendre_doc_FK FOREIGN KEY (mail) REFERENCES doc(mail)
-	,CONSTRAINT prendre_patient0_FK FOREIGN KEY (mail_patient) REFERENCES patient(mail)
+	-- CONSTRAINT prendre_PK PRIMARY KEY (mail,mail_patient) ,
+	CONSTRAINT prendre_doc_FK FOREIGN KEY (mail) REFERENCES doc(mail) ,
+	CONSTRAINT prendre_patient0_FK FOREIGN KEY (mail_patient) REFERENCES patient(mail)
 )WITHOUT OIDS;
 
 

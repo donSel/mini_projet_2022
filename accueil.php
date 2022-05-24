@@ -58,19 +58,21 @@
     
         if (!empty($_SESSION['connected']) && $_SESSION['connected']){
             // Welcome message
-            echo "<div class='d-flex p-2 border'>";
+            echo "<div class='d-flex justify-content-center'>";
             echo "<h2>Bienvenue " . $_SESSION['nom'] . " " . $_SESSION['prenom'] . " !</h2>";
             echo "</div>";
             if ($_SESSION['isUser'] == true){
                 // Search Bar 
-                echo "<div class='d-flex p-2 border'>";
+                echo "<div class='d-flex justify-content-center'>";
                 echo "               
-                <div class='container-fluid bg-primary'>
+                <div class='m-1 p-1 bg-light'>
                 <nav class='navbar navbar-light bg-light'>
                 <form class='form-inline' action='accueil.php' method='get'>
                 <input class='form-control mr-sm-2' name='nse' type='search' placeholder='Nom, spécialité, établissement' aria-label='Search'>
                 <input class='form-control mr-sm-2' name='lieu' type='search' placeholder='Lieu' aria-label='Search'>
+                <div class='d-flex justify-content-center'>
                 <button class='btn btn-outline-success my-2 my-sm-0' type='submit' name='rechercher'>Rechercher</button>
+                </div> 
                 </form>
                 </nav> 
                 </div> 
@@ -82,16 +84,16 @@
         if (isset($_GET['rechercher'])){ 
             $searchArr = searchDoc($db, $_GET['lieu'], $_GET['nse']);
             $n = count($searchArr);
-            echo "<h3>" . $n . " résultats trouvés</h3><br><br>";
+            echo "<h4>" . $n . "  résultats trouvés :</h4>";
             
             echo "<form action='takeAppointment.php' method='get'>";
             foreach($searchArr as $value){
-                echo "<div class='d-flex p-2 border'>";
+                echo "<div class='flex-fill m-1 p-1 bg-light'>";
                 echo "<div class='card w-75'>";
                 echo "<div class='card-body'>";
                 echo "<h5 class='card-title'>" . $value['nom'] . " " . $value['prenom'] . "</h5>";
-                echo "<p class='card-text'>". $value['specialite'] . " " . $value['telephone'] . " " . $value['etablissement'] . " " . $value['adresse']  . " " . $value['ville']  . " " . $value['code_postal']. "</p>";
-                echo "<button name='button' type='submit'value=" . $value['mail'] . " class='btn btn-primary'> Prendre un rendez-vous </button>";
+                echo "<p class='card-text'>spécialité : ". $value['specialite'] . ", téléphone : " . $value['telephone'] . ", établissement : " . $value['etablissement'] . ", adresse :  " . $value['adresse']  . " " . $value['ville']  . " " . $value['code_postal']. "</p>";
+                echo "<button name='button' type='submit' value=" . $value['mail'] . " class='btn btn-primary'> Prendre un rendez-vous </button>";
                 //echo "<a href='takeAppointment.php' class='btn btn-primary' name='selectedDoc'>Button</a>";
                 echo "</div>";
                 echo "</div>";
@@ -100,15 +102,7 @@
             echo "</form>";
         }
         
-    ?>
-    <!--<div class='p-2'>
-    <div class='card w-75'>
-    <div class='card-body'>
-    <h5 class='card-title'></h5>
-    <p class='card-text'>===============================================================================================================================</p>
-    </div>
-    </div>-->
-    
+    ?>   
     </div>
    </body>
 </html>

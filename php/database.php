@@ -61,6 +61,18 @@
             }
         }
         return false;
+    }   
+    
+    
+    //rdvExists(...)
+    function rdvExists($arr, $hour){
+        $hour = $hour . ':00:00';
+        foreach ($arr as $value){
+            if ($value['heure'] == $hour){
+                return true;
+            }
+        }
+        return false;
     }
         
     
@@ -130,17 +142,6 @@
     }
     
     
-    //getOldAppointmentsUser(...)
-    //function getOldAppointmentsUser($db, $mail_patient, $mail){
-    //    $request = 'SELECT * FROM prendre WHERE mail=:mail and mail_patient=:mail_patient';
-    //    $statement = $db->prepare($request);
-    //    $statement->bindParam(':mail', $mail);
-    //    $statement->bindParam(':mail_patient', $mail_patient);
-    //    $statement->execute();
-    //    return $statement->fetchAll(PDO::FETCH_ASSOC); 
-    //}
-    
-    
     //getCompte(...)
     function getCompte($db, $mail, $user){
         if ($user == true){
@@ -169,7 +170,7 @@
     }   
     
     
-    // getOldAppointments(...)
+    // getOldAppointments(...) // TO DO
     function getOldAppointments($db, $mailUser){
         // getting current date/time
         $date = new DateTime();
@@ -185,10 +186,9 @@
         //$statement->execute();
         //$result = $statement->fetchAll(PDO::FETCH_ASSOC);
         
-        $request = "SELECT * FROM prendre WHERE jour::date<:jour and heure::time<:heure + '1 minute'::interval and mail_patient=:mail_patient"; 
+        $request = "SELECT * FROM prendre WHERE (jour between '2000-01-01'::date and '2022-05-25'::date - '1 day'::interval) and mail_patient=:mail_patient"; 
         $statement = $db->prepare($request);
-        $statement->bindParam(':jour', $jour);
-        $statement->bindParam(':heure', $heure);
+        //$statement->bindParam(':jour', $jour);
         $statement->bindParam(':mail_patient', $mailUser);
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -393,7 +393,6 @@
     function takeAppointment($db, $mailDoc, $mailPatient, $jour, $heure){
         // check if appointment possible
         if (!isAppointmentPossible($db, $mailDoc, $jour, $heure)){
-            echo "Appointment is impossible to take";
             return false;
         }
         // adding appointment to the database

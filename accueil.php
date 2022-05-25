@@ -39,7 +39,7 @@
             <form action="accueil.php" method="get">
                 <?php
                     if (!empty($_SESSION['connected']) && $_SESSION['connected']){
-                        echo "<button class='btn btn-outline-light' type='submit' onclick=\"window.location.href = 'infoPage.php';\">Vos informations</button>";
+                        echo "<a class='btn btn-primary' href='infoPage.php' role='button'>Vos informations</a>";
                         echo "<button class='btn btn-outline-light' type='submit' name='deconnexion'>Déconnexion</button>";
                     }
                 ?>
